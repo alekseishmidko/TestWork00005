@@ -3,20 +3,42 @@ import { Card, Descriptions } from "antd";
 import type { FC } from "react";
 import styles from "./WeatherCard.module.scss";
 import { formatDate } from "@/shared/utils/formatDate";
+import { StarFilled, StarOutlined } from "@ant-design/icons";
 
-type Props = { data: WeatherApiCurrentResponse };
+type Props = {
+  data: WeatherApiCurrentResponse;
+  isFavourite?: boolean;
+  onToggleFavourite: () => void;
+};
 
-export const WeatherCard: FC<Props> = ({ data }) => {
+export const WeatherCard: FC<Props> = ({
+  data,
+  isFavourite,
+  onToggleFavourite,
+}) => {
   const { location, current } = data;
   const currentDate = formatDate(new Date(location.localtime));
 
   return (
     <Card
       title={
-        <span className={styles.title}>
-          Weather in {location.name}, {location.country}
-          <br /> at {currentDate}
-        </span>
+        <div className="d-flex justify-content-between align-items-center">
+          <span className={styles.title}>
+            Weather in {location.name}, {location.country}
+            <br /> at {currentDate}
+          </span>
+          {typeof isFavourite !== "undefined" && (
+            <span
+              onClick={onToggleFavourite}
+              style={{ fontSize: 20, color: "#fadb14", cursor: "pointer" }}
+              title={
+                isFavourite ? "Remove from favourites" : "Add to favourites"
+              }
+            >
+              {isFavourite ? <StarFilled /> : <StarOutlined />}
+            </span>
+          )}
+        </div>
       }
       className={styles.wrapper}
     >
