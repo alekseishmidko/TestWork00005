@@ -1,0 +1,26 @@
+.header {
+  padding: 1.25rem;
+  gap: 1rem;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #89c4e9;
+  border-bottom: 1px solid #e5e7eb;
+}
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+  color: #4a4a4a;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  display: inline-block;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e2e2e2;
+    color: #333;
+  }
+}
