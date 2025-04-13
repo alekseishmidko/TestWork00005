@@ -6,7 +6,7 @@ import {
 import * as yup from "yup";
 
 export type ForecastBody = { lat: number; lon: number };
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 if (!API_KEY) {
   throw new Error("API_KEY required!");
@@ -19,7 +19,6 @@ const cityValidator = yup.object({
 export async function getWeather({ city }: { city: string }) {
   try {
     const validData = cityValidator.validateSync({ city });
-
     const { data } = await axiosInstanse<WeatherApiCurrentResponse>({
       url: `https://api.weatherapi.com/v1/current.json`,
       method: "GET",
@@ -28,10 +27,14 @@ export async function getWeather({ city }: { city: string }) {
         q: validData.city,
       },
     });
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((data as any)?.error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new Error((data as any).error.message);
+    }
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch {
+    throw new Error("Unknown error");
   }
 }
 export async function getForecast({
@@ -53,10 +56,15 @@ export async function getForecast({
         days: validData.days ?? 3,
       },
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((data as any)?.error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new Error((data as any).error.message);
+    }
 
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch {
+    throw new Error("Unknown error");
   }
 }
 

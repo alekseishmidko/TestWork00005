@@ -1,0 +1,20 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-redeclare": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+
+    "react/no-children-prop": "off",
+    "@typescript-eslint/no-empty-object-type": "off",
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/prefer-as-const": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-no-useless-fragment": "warn",
+    "react/self-closing-comp": "error",
+    "@typescript-eslint/consistent-type-imports": "error"
+  }
+}

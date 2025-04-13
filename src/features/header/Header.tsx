@@ -14,7 +14,7 @@ export function Header() {
       </Link>
 
       <div className="d-flex flex-row gap-2">
-        <Link href={PUBLIC_URL.favourites()}>
+        <Link href={PUBLIC_URL.forecast()}>
           <Button size="large" variant="link">
             Forecast
           </Button>

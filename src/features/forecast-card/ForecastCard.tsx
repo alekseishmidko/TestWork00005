@@ -6,7 +6,7 @@ type Props = {
   data: ForecastDay;
 };
 
-export const DayForecastCard: FC<Props> = ({ data }) => {
+export const ForecastCard: FC<Props> = ({ data }) => {
   const { date, day, astro } = data;
 
   return (
@@ -30,8 +30,7 @@ export const DayForecastCard: FC<Props> = ({ data }) => {
       <Descriptions
         column={1}
         size="small"
-        labelStyle={{ fontWeight: 600, fontSize: 16 }}
-        contentStyle={{ fontSize: 16 }}
+        style={{ fontSize: 16, fontWeight: 600 }}
       >
         <Descriptions.Item label="Average temperature">
           {day.avgtemp_c}°C
