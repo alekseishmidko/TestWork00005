@@ -1,99 +1,134 @@
-export interface WeatherResponse {
-  coord: {
-    lon: number;
-    lat: number;
-  };
-  weather: {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
-  }[];
-  base: string;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-    sea_level?: number;
-    grnd_level?: number;
-  };
-  visibility: number;
-  wind: {
-    speed: number;
-    deg: number;
-    gust?: number;
-  };
-  rain?: {
-    [key: string]: number; // например, "1h": 2.73
-  };
-  clouds: {
-    all: number;
-  };
-  dt: number;
-  sys: {
-    type: number;
-    id: number;
-    country: string;
-    sunrise: number;
-    sunset: number;
-  };
-  timezone: number;
-  id: number;
-  name: string;
-  cod: number;
-}
-
-export interface ForecastResponse {
-  city: {
-    id: number;
+export type WeatherApiCurrentResponse = {
+  location: {
     name: string;
-    coord: {
-      lon: number;
-      lat: number;
-    };
+    region: string;
     country: string;
-    population: number;
-    timezone: number;
+    lat: number;
+    lon: number;
+    tz_id: string;
+    localtime_epoch: number;
+    localtime: string;
   };
-  cod: string;
-  message: number;
-  cnt: number;
-  list: ForecastDay[];
+  current: {
+    last_updated_epoch: number;
+    last_updated: string;
+    temp_c: number;
+    temp_f: number;
+    is_day: number;
+    condition: {
+      text: string;
+      icon: string;
+      code: number;
+    };
+    wind_mph: number;
+    wind_kph: number;
+    wind_degree: number;
+    wind_dir: string;
+    pressure_mb: number;
+    pressure_in: number;
+    precip_mm: number;
+    precip_in: number;
+    humidity: number;
+    cloud: number;
+    feelslike_c: number;
+    feelslike_f: number;
+    windchill_c: number;
+    windchill_f: number;
+    heatindex_c: number;
+    heatindex_f: number;
+    dewpoint_c: number;
+    dewpoint_f: number;
+    vis_km: number;
+    vis_miles: number;
+    uv: number;
+    gust_mph: number;
+    gust_kph: number;
+  };
+};
+export type WeatherApiForecast = WeatherApiCurrentResponse & {
+  forecast: {
+    forecastday: ForecastDay[];
+  };
+};
+export interface ForecastDay {
+  date: string;
+  date_epoch: number;
+  day: {
+    maxtemp_c: number;
+    maxtemp_f: number;
+    mintemp_c: number;
+    mintemp_f: number;
+    avgtemp_c: number;
+    avgtemp_f: number;
+    maxwind_mph: number;
+    maxwind_kph: number;
+    totalprecip_mm: number;
+    totalprecip_in: number;
+    totalsnow_cm: number;
+    avgvis_km: number;
+    avgvis_miles: number;
+    avghumidity: number;
+    daily_will_it_rain: number;
+    daily_chance_of_rain: number;
+    daily_will_it_snow: number;
+    daily_chance_of_snow: number;
+    condition: {
+      text: string;
+      icon: string;
+      code: number;
+    };
+    uv: number;
+  };
+  astro: {
+    sunrise: string;
+    sunset: string;
+    moonrise: string;
+    moonset: string;
+    moon_phase: string;
+    moon_illumination: number;
+    is_moon_up: number;
+    is_sun_up: number;
+  };
+  hour: HourForecast[];
 }
 
-export interface ForecastDay {
-  dt: number;
-  sunrise: number;
-  sunset: number;
-  temp: {
-    day: number;
-    min: number;
-    max: number;
-    night: number;
-    eve: number;
-    morn: number;
-  };
-  feels_like: {
-    day: number;
-    night: number;
-    eve: number;
-    morn: number;
-  };
-  pressure: number;
-  humidity: number;
-  weather: {
-    id: number;
-    main: string;
-    description: string;
+export interface HourForecast {
+  time_epoch: number;
+  time: string;
+  temp_c: number;
+  temp_f: number;
+  is_day: number;
+  condition: {
+    text: string;
     icon: string;
-  }[];
-  speed: number;
-  deg: number;
-  gust?: number;
-  clouds: number;
-  pop: number;
-  rain?: number;
+    code: number;
+  };
+  wind_mph: number;
+  wind_kph: number;
+  wind_degree: number;
+  wind_dir: string;
+  pressure_mb: number;
+  pressure_in: number;
+  precip_mm: number;
+  precip_in: number;
+  snow_cm: number;
+  humidity: number;
+  cloud: number;
+  feelslike_c: number;
+  feelslike_f: number;
+  windchill_c: number;
+  windchill_f: number;
+  heatindex_c: number;
+  heatindex_f: number;
+  dewpoint_c: number;
+  dewpoint_f: number;
+  will_it_rain: number;
+  chance_of_rain: number;
+  will_it_snow: number;
+  chance_of_snow: number;
+  vis_km: number;
+  vis_miles: number;
+  gust_mph: number;
+  gust_kph: number;
+  uv: number;
 }

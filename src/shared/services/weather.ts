@@ -1,5 +1,8 @@
 import { axiosInstanse } from "../api/instanse";
-import { WeatherResponse } from "../types/weather";
+import {
+  WeatherApiCurrentResponse,
+  WeatherApiForecast,
+} from "../types/weather";
 import * as yup from "yup";
 
 export type ForecastBody = { lat: number; lon: number };
@@ -8,41 +11,53 @@ const API_KEY = process.env.API_KEY;
 if (!API_KEY) {
   throw new Error("API_KEY required!");
 }
-
-export const coordinatesValidator = yup.object({
-  lat: yup
-    .number()
-    .required("Latitude required")
-    .min(-90, "Latitude cant be less -90")
-    .max(90, "Latitude cant be more 90"),
-
-  lon: yup
-    .number()
-    .required("Longitude required")
-    .min(-180, "Longitude cant be less -180")
-    .max(180, "Longitude cant be more 180"),
+const cityValidator = yup.object({
+  city: yup.string().required("City is required"),
+  days: yup.number().optional(),
 });
-export async function getCurrentWeather(body: ForecastBody) {
-  const validatedBody = coordinatesValidator.validateSync(body);
-  const { lat, lon } = validatedBody;
-  const { data } = await axiosInstanse<WeatherResponse>({
-    url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
-    method: "GET",
-  });
 
-  return data;
+export async function getWeather({ city }: { city: string }) {
+  try {
+    const validData = cityValidator.validateSync({ city });
+
+    const { data } = await axiosInstanse<WeatherApiCurrentResponse>({
+      url: `https://api.weatherapi.com/v1/current.json`,
+      method: "GET",
+      params: {
+        key: API_KEY,
+        q: validData.city,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function getForecast({
+  city,
+  days,
+}: {
+  city: string;
+  days?: number;
+}) {
+  try {
+    const validData = cityValidator.validateSync({ city, days });
+
+    const { data } = await axiosInstanse<WeatherApiForecast>({
+      url: `https://api.weatherapi.com/v1/forecast.json`,
+      method: "GET",
+      params: {
+        key: API_KEY,
+        q: validData.city,
+        days: validData.days ?? 3,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export async function getForecast16D(body: ForecastBody) {
-  const validatedBody = coordinatesValidator.validateSync(body);
-  const { lat, lon } = validatedBody;
-
-  const { data } = await axiosInstanse<WeatherResponse>({
-    url: `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
-    method: "GET",
-  });
-
-  return data;
-}
-
-export const weatherService = { getCurrentWeather, getForecast16D };
+export const weatherService = { getWeather, getForecast };

@@ -1,13 +1,22 @@
-import axios, { CreateAxiosDefaults } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-const getContentType = () => ({
-  "Content-type": "application/json",
+export const axiosInstanse = axios.create({
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-const options: CreateAxiosDefaults = {
-  baseURL: process.env.SERVER_URL,
-  headers: getContentType(),
-  withCredentials: true,
+export const createInstance = <T>(
+  config: AxiosRequestConfig,
+  options?: AxiosRequestConfig
+): Promise<T> => {
+  return axiosInstanse({
+    ...config,
+    ...options,
+  }).then((r) => r.data);
 };
 
-export const axiosInstanse = axios.create(options);
+export type BodyType<Data> = Data;
+
+export type ErrorType<Error> = AxiosError<Error>;
