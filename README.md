@@ -1,3 +1,8 @@
+
+### Использовал другое АПИ для работы ввиду того что там нет возможности запросить прогноз на бесплатном тарифе не привязывая карточку ###
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
